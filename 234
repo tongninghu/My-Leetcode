@@ -10,29 +10,29 @@ class Solution {
 public:
     bool isPalindrome(ListNode* head) {
         
-        if(!head)
+        if(!head)                         // must consider NULL input
              return true;
         else{
             
         ListNode* fp = head;
         ListNode* sp = head;
      
-        while(fp && fp->next){
+        while(fp && fp->next){         // use fast and slow pointer to find the middle pointer
             fp = fp->next->next;
             sp = sp->next;
         }
        
         ListNode* ptr;
         ListNode* ptrn = NULL;
-        ListNode* prev = NULL;
+        ListNode* prev = NULL;       // must define the tail of the list. if the tail is not to NULL, there may UTL problems
        
-       for(ptr = sp; ptr; ptr = ptrn){
+       for(ptr = sp; ptr; ptr = ptrn){       // reverse the list from middle point
             ptrn = ptr->next;
             ptr->next = prev;
             prev = ptr;
         }
         
-           while(prev != sp){
+           while(prev != sp){               // check the list from two ends
                if(prev->val != head->val)
                     return false;
                else{
@@ -41,7 +41,7 @@ public:
                }
            }  
            
-           if(prev->val == head->val)
+           if(prev->val == head->val)       // now the two lists meet in the middle point sp
                return true;
            else
                return false;
