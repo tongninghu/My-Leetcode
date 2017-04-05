@@ -19,7 +19,7 @@ public:
                 ptra = ptra->next;
                 ptrb = ptrb->next;
             }
-            else if (!ptra->next) {
+            else if (!ptra->next) {        // combine the two list. so they have the same length
                 ptra = headB;
                 ptrb = ptrb->next;
             }
