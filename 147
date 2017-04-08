@@ -1,0 +1,38 @@
+Sort a linked list using insertion sort.
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* insertionSortList(ListNode* head) {
+        if (!head) return NULL;
+        
+        ListNode *fakeHead = new ListNode(-1), *pj, *pi = head->next, *ppi = head, *tempj, *tempi;
+        fakeHead->next = head;
+        bool flag = false;
+        
+            while (pi) {
+                tempi = pi->next;
+                flag = false;
+                
+                for (pj = fakeHead; pj != pi; pj = pj->next) {
+                      if (pj->next->val > pi->val) {
+                          tempj = pj->next;
+                          pj->next = pi;
+                          pi->next = tempj;
+                        ppi->next = tempi;
+                          flag = true;
+                      }
+                }
+                if (!flag) ppi = pi;
+                pi = tempi;
+           }
+        return fakeHead->next; 
+    }
+};
