@@ -1,0 +1,48 @@
+Given two arrays, write a function to compute their intersection.
+Example:
+Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2, 2].
+Note:
+Each element in the result should appear as many times as it shows in both arrays.
+The result can be in any order.
+Follow up:
+What if the given array is already sorted? How would you optimize your algorithm?
+What if nums1's size is small compared to nums2's size? Which algorithm is better?
+What if elements of nums2 are stored on disk, and the memory is limited such that you cannot load all elements into the memory at once?
+
+class Solution {
+public:
+    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> search;
+        map<int, int> save;
+        int n = 0;
+        int key;
+        map<int, int>::iterator itr;
+        
+        while (n < nums1.size()) {
+            itr = save.find(nums1[n]);
+            if (itr == save.end()) save.insert(pair<int, int>(nums1[n], 1));
+            else {
+                key = itr->second;
+                save.erase(itr);
+                save.insert(pair<int, int>(nums1[n], key + 1));
+            }
+            n++;
+        }
+
+        n = 0;
+        while (n < nums2.size()) {
+            itr = save.find(nums2[n]);
+            if (save.find(nums2[n]) != save.end()) {
+                search.push_back(nums2[n]);
+                key = itr->second - 1;
+                if (key != 0) {
+                    save.erase(itr);
+                    save.insert(pair<int, int>(nums2[n], key));
+                }
+                else save.erase(itr);
+            }
+            n++;
+        }
+        return search;
+    }
+};
