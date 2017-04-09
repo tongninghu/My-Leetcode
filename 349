@@ -1,0 +1,83 @@
+Given two arrays, write a function to compute their intersection.
+
+Example:
+Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2].
+
+Note:
+Each element in the result must be unique.
+The result can be in any order.
+
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        sort(nums1.begin(), nums1.end());
+        sort(nums2.begin(), nums2.end());
+        
+        int high2 = nums2.size() - 1;
+        int high1 = nums1.size() - 1;
+        int middle;
+        int target;
+        int n = 0;
+        int low = 0;
+        vector<int> search;
+        
+        
+        if (high2 > high1) {
+            while (n < nums1.size()) {
+                if (n && nums1[n] == nums1[n - 1]) n++;
+                else {
+                    middle = (high2 - low)/2 + low;
+                    target = nums1[n];
+                    while (nums2[middle] != target && low != high2) {
+                        if (nums2[middle] < target) {
+                            low = middle;
+                            if (high2 - low == 1) {
+                                middle = middle + 1;
+                                low = middle;
+                            }
+                            else
+                            middle = (high2 - low)/2 + low;
+                        }
+                        else {
+                            high2 = middle;
+                            middle = (high2 - low)/2 + low;
+                        }
+                    }
+                    if (nums2[middle] == target) search.push_back(target);
+                    n++;
+                }
+                low = middle;
+                high2 = nums2.size() - 1;
+            }
+        }
+        else {
+                while (n < nums2.size()) {
+                if (n && nums2[n] == nums2[n - 1]) n++;
+                else {
+                    middle = (high1-low)/2 + low;
+                    target = nums2[n];
+                    while (nums1[middle] != target && low != high1) {
+                        if (nums1[middle] < target) {
+                            low = middle;
+                            if (high1 - low == 1) {
+                                middle = middle + 1;
+                                low = middle;
+                            }
+                            else
+                            middle = (high1 - low)/2 + low;
+                        }
+                        else {
+                            high1 = middle;
+                            middle = (high1 - low)/2 + low;
+                        }
+                    }
+                    if (nums1[middle] == target) search.push_back(target);
+                    n++;
+                }
+                low = middle;
+                high1 = nums1.size() - 1;
+            }
+        }
+        return search;
+    }
+};
