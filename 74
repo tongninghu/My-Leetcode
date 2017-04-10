@@ -1,0 +1,64 @@
+Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
+
+Integers in each row are sorted from left to right.
+The first integer of each row is greater than the last integer of the previous row.
+For example,
+
+Consider the following matrix:
+
+[
+  [1,   3,  5,  7],
+  [10, 11, 16, 20],
+  [23, 30, 34, 50]
+]
+Given target = 3, return true.
+
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        
+        if (matrix.empty() || matrix[0].empty()) return false;
+        
+        int rlow = 0, rhigh = matrix.size() - 1, rmiddle = rhigh/2;
+        int clow = 0, chigh = matrix[0].size() - 1, cmiddle = chigh/2;
+        
+        while ((matrix[rmiddle][clow] > target || matrix[rmiddle][chigh] < target) && rlow != rhigh) {
+            if (matrix[rmiddle][clow] > target) {
+                rhigh = rmiddle;
+                rmiddle = (rhigh - rlow)/2 + rlow;
+            }
+            else {
+                rlow = rmiddle;
+                if (rhigh - rlow == 1) {
+                    rmiddle = rmiddle + 1;
+                    rlow = rmiddle;
+                }
+                else {
+                    rmiddle = (rhigh - rlow)/2 + rlow;
+                }
+            }
+        }
+        
+        if (matrix[rmiddle][clow] > target || matrix[rmiddle][chigh] < target) return false;
+
+        
+        while (matrix[rmiddle][cmiddle] != target && clow != chigh) {
+            if (matrix[rmiddle][cmiddle] > target) {
+                chigh = cmiddle;
+                cmiddle = (chigh - clow)/2 + clow;
+            }
+            else {
+                clow = cmiddle;
+                if (chigh - clow == 1) {
+                    cmiddle = cmiddle + 1;
+                    clow = cmiddle;
+                }
+                else {
+                    cmiddle = (chigh - clow)/2 + clow;
+                }
+            }
+        }
+        if (matrix[rmiddle][cmiddle] == target) return true;
+        else return false;
+    }
+};
