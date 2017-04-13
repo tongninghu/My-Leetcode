@@ -1,0 +1,32 @@
+Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+
+For example, this binary tree [1,2,2,3,4,4,3] is symmetric:
+But the following [1,2,2,null,3,null,3] is not:
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool NodeSymmetric(TreeNode* p, TreeNode* q) {
+        if (!p->left && !p->right && !q->left && !q->right) return (p->val == q->val)? true : false;
+        else if (p->left && !p->right && !q->left && q->right) return ((p->val == q->val) && NodeSymmetric(p->left, q->right));
+        else if (!p->left && p->right && q->left && !q->right) return ((p->val == q->val) && NodeSymmetric(q->left, p->right));
+        else if (p->left && p->right && q->left && q->right) return ((p->val == q->val) && NodeSymmetric(q->left, p->right) && NodeSymmetric(q->right, p->left));
+        else return false;
+    }
+    
+    bool isSymmetric(TreeNode* root) {
+        if (!root) return true;
+        if (root->left && root->right) return NodeSymmetric(root->left, root->right);
+        else if (!root->left && !root->right) return true;
+        else return false;
+        
+    }
+};
