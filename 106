@@ -1,0 +1,38 @@
+Given inorder and postorder traversal of a tree, construct the binary tree.
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+private:
+    unordered_map <int, int> my_map;
+public:
+    TreeNode* helper(int ileft, int iright, int pleft, int pright, vector<int>& inorder, vector<int>& postorder) {
+        if (ileft > iright) return NULL;
+        else if (ileft == iright) return new TreeNode(inorder[ileft]);
+        
+        TreeNode* root = new TreeNode(postorder[pright]);
+        int i = my_map[postorder[pright]];
+        int length = iright - i;
+        root->left = helper(ileft, i - 1, pleft, pright - length - 1, inorder, postorder);
+        root->right = helper(i + 1, iright, pright - length, pright - 1, inorder, postorder);
+        return root;
+    }
+    
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        if (postorder.size() == 0 || inorder.size() == 0 || postorder.size() != inorder.size())
+            return NULL;
+        int i = 0;
+        while (i < inorder.size()) {
+            my_map[inorder[i]] = i;
+            i++;
+        }
+        return helper(0, inorder.size() - 1, 0, postorder.size() - 1, inorder, postorder);
+    }
+};
