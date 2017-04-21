@@ -17,22 +17,16 @@ public:
     int LeftDepth (TreeNode* root, int depth) {
             if (root->left) return LeftDepth (root->left, depth + 1);
             else return depth;
-        }
-        
+        }      
     int RightDepth (TreeNode* root, int depth) {
             if (root->right) return RightDepth (root->right, depth + 1);
             else return depth;
-        }  
-        
+        }          
     int countNodes(TreeNode* root) {
-        if (!root) return 0;
-        
+        if (!root) return 0;        
         int LeftDep = LeftDepth (root, 1);
-        int RightDep = RightDepth (root, 1);
-
-        
+        int RightDep = RightDepth (root, 1);    
         if (LeftDep == RightDep) return (1 << LeftDep) - 1;
-        else return countNodes(root->left) + countNodes(root->right) + 1;
-        
+        else return countNodes(root->left) + countNodes(root->right) + 1;       
     }
 };
