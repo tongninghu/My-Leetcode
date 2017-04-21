@@ -18,12 +18,12 @@ public:
         if (!root->left && !root->right) return depth;
         if (root->left)  l = hight(root->left, depth + 1);
         if (root->right) r = hight(root->right, depth + 1);
-        if ((l - r) > 1 || (r - l) > 1) return INT_MAX;
+        if (abs(l - r) > 1 || l == -1 || r == -1) return -1;
         else return max(l, r);
     }
     bool isBalanced(TreeNode* root) {
         if (!root) return true;
-        if(hight(root, 1) == INT_MAX) return false;
+        if(hight(root, 1) == -1) return false;
         else return true;
     }
 };
