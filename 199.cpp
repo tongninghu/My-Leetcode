@@ -24,8 +24,6 @@ public:
     void  InsertVector(TreeNode* root, int i, vector<int>& level) {
               if (i >= level.size()) {
                   level.push_back(root->val);
-//                  level.resize(i + 1);
-//                  level[i] = root->val;
               }
               if (root->right) InsertVector(root->right, i + 1, level);
               if (root->left) InsertVector(root->left, i + 1, level);
