@@ -26,50 +26,19 @@ Binary tree [1,2,3], return false.
  * };
  */
 class Solution {
-public:
-    int findLarge(TreeNode* root, bool& Large) {
-        if (!root->left && !root->right) return root->val; 
-        if (root->left ) {
-            int Left = findLarge(root->left, Large);
-            if (root->val <= Left) {
-                Large = false;
-                return INT_MAX;
-            }
-        }
-        if (root->right) {
-            int Right = findLarge(root->right, Large);
-            if (root->val >= Right) {
-                Large = false;
-                return INT_MAX;
-            }
-            else return Right;
-        }
-        return root->val;
-    }
-    int findSmall(TreeNode* root, bool& Small) {
-        if (!root->left && !root->right) return root->val; 
-        if (root->right ) {
-            int Right = findSmall(root->right, Small);
-            if (root->val >= Right) {
-                Small = false;
-                return INT_MIN;
-            }
-        }
-        if (root->left) {
-            int Left = findSmall(root->left, Small);
-            if (root->val <= Left) {
-                Small = false;
-                return INT_MAX;
-            }
-            else return Left;
-        }
-        return root->val;
+public:    
+    void findMistake(TreeNode *root, int& num, bool& flag, int& i) {
+        if (root->left)    findMistake(root->left, num, flag, i);
+        if (num >= root->val && i != 1) flag = false;
+        num = root->val;
+        i++;
+        if (root->right)   findMistake(root->right, num, flag, i);
     }
     bool isValidBST(TreeNode* root) {
+        bool flag = true;
+        int num = INT_MIN, i = 1;
         if (!root) return true;
-        bool Large = true, Small = true;
-        int a = findLarge(root, Large);
-        int b = findSmall(root, Small);
-        return (Large && Small)? true : false;
+        findMistake(root, num, flag, i);
+        return flag;
     }
 };
