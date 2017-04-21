@@ -19,7 +19,7 @@ return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
  *     TreeNode *right;
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
- */
+ 
 class Solution {
 public:
     void RootToLeaf(TreeNode* root, int sum, int target, bool& flag) {
@@ -34,5 +34,16 @@ public:
         if (!root) return false;
         RootToLeaf(root, 0, sum, flag);
         return flag;
+    }
+}; */
+
+class Solution {
+public:
+    bool hasPathSum(TreeNode* root, int sum) {
+        if (root == NULL)
+            return false;
+        if (root->left == NULL && root->right == NULL && root->val == sum)
+            return true;
+        return hasPathSum (root->left, sum - root->val) || hasPathSum (root->right, sum - root->val);
     }
 };
