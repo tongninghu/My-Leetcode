@@ -36,20 +36,17 @@ public:
         if (!root) return NULL;
         TreeNode* L = helper(root->left);
         TreeNode* R = helper(root->right);
-        if(!root->left && !root->right) return root;
-        else if(root->left && !root->right) {
+        if (root->left) {
             root->right = root->left;
             root->left = NULL;
-            return L;
+            while (L->right) {
+                L = L->right;
+            }
+            L->right = R;
         }
-        else if(!root->left && root->right)  return R;
-        else {
-            L->right = root->right;
-            root->right = root->left;
-            root->left = NULL;
-            return R;
-        }
+        return root;
     }
+    
     void flatten(TreeNode* root) {
         helper(root);
     }
