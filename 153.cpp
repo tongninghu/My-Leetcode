@@ -11,7 +11,7 @@ public:
         int low = 0, high = nums.size() - 1, mid;
         while (low < high) {
             mid = (high - low) / 2 + low;
-            if (nums[mid] < nums[high]) high = mid;   // this means that upper half is normal, so mini must lies in lower half.
+            if (nums[mid] < nums[high]) high = mid;   // this means when upper half is normal, so mini must lies in lower half, whether it's normal or not.
             else low = mid + 1;     // when upper half is abnormal, it means the rotating point is in upper half, so mini is there.
         }
         return nums[low];
