@@ -11,9 +11,8 @@ public:
         int low = 0, high = nums.size() - 1, mid;
         while (low < high) {
             mid = (high - low) / 2 + low;
-            if (nums[mid] < nums[low]) high = mid;
-            else if (nums[mid] > nums[high]) low = mid + 1;
-            else return nums[low];
+            if (nums[mid] < nums[high]) high = mid;
+            else low = mid + 1;
         }
         return nums[low];
     }
