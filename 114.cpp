@@ -32,26 +32,26 @@ The flattened tree should look like:
  */
 class Solution {
 public:
-    void helper(TreeNode* root, vector<int>& my_vector) {
-        if (!root) return;
-        my_vector.push_back(root->val);
-        helper(root->left, my_vector);
-        helper(root->right, my_vector);
+    TreeNode* helper(TreeNode* root) {
+        if (!root) return NULL;
+        TreeNode* L = helper(root->left);
+        TreeNode* R = helper(root->right);
+        if(!root->left && !root->right) return root;
+        else if(root->left && !root->right) {
+            root->right = root->left;
+            root->left = NULL;
+            return L;
+        }
+        else if(!root->left && root->right)  return R;
+        else {
+            L->right = root->right;
+            root->right = root->left;
+            root->left = NULL;
+            return R;
+        }
     }
     void flatten(TreeNode* root) {
-        vector<int> my_vector;
-        helper(root, my_vector);
-        TreeNode *p = root;
-        for (int i = 0; i < my_vector.size(); i++) {
-            if (i == 0) {
-                p->val = my_vector[i];
-                p->left = NULL;
-            }
-            else {
-                p->right = new TreeNode (my_vector[i]);
-                p = p->right;
-            }
-        }
+        helper(root);
     }
 };
 
