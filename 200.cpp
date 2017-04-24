@@ -20,20 +20,22 @@ class Solution {
 private:
     int num = 0;
 public:
-    void DFS(int i, int j, vector<vector<char>>& grid, vector<vector<int>>& res) {
-        res[i][j] = 1;
-        if (j + 1 < grid[0].size() && grid[i][j + 1] == '1' && res[i][j + 1] == 0) DFS(i, j + 1, grid, res);
-        if (i + 1 < grid.size() && grid[i + 1][j] == '1' && res[i + 1][j] == 0) DFS(i + 1, j, grid, res);
-        if (j - 1 >= 0 && grid[i][j - 1] == '1' && res[i][j - 1] == 0) DFS(i, j - 1, grid, res);
-        if (i - 1 >= 0 && grid[i - 1][j] == '1' && res[i - 1][j] == 0) DFS(i - 1, j, grid, res);
+    void DFS(int i, int j, vector<vector<char>>& grid, vector<vector<bool>>& visit) {
+        if (i < 0 || j < 0 || i == grid.size() || j == grid[0].size()) return;
+        if (grid[i][j] == '0' || visit[i][j] == true) return;
+        visit[i][j] = true;
+        DFS(i, j + 1, grid, visit);
+        DFS(i + 1, j, grid, visit);
+        DFS(i, j - 1, grid, visit);
+        DFS(i - 1, j, grid, visit);
     }
     int numIslands(vector<vector<char>>& grid) {
-        if (grid.size() == 0) return 0;
-        vector<vector<int>> res (grid.size(), vector<int>(grid[0].size(), 0));
+        if (grid.size() == 0 || grid[0].size() == 0) return 0;
+        vector<vector<bool>>visit (grid.size(), vector<bool>(grid[0].size(),false));
         for (int i = 0; i < grid.size(); i++) {
             for (int j = 0; j < grid[i].size(); j++) {
-                if (grid[i][j] == '1' && res[i][j] == 0) {
-                    DFS(i, j, grid, res);
+                if (grid[i][j] == '1' && visit[i][j] == false) {
+                    DFS(i, j, grid, visit);
                     num++;
                 }
             }
