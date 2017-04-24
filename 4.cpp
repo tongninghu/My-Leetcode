@@ -17,17 +17,17 @@ class Solution {
 public:
     double getKthSmall(vector<int>& nums1, int s1, vector<int>& nums2, int s2, int k) {
         int n1 = nums1.size() - s1, n2 = nums2.size() - s2;
-        if (n1 == 0) return nums2[s2 + k - 1];
+        if (n1 == 0) return nums2[s2 + k - 1];  // s1 and s2 represent the starting point. so, all value in vector should be [s1+] or [s2+]
         if (n2 == 0) return nums1[s1 + k - 1];
     
-        if (k == 1) return min(nums1[s1], nums2[s2]);
-        int i = min(n1, k / 2), j = min(n2, k / 2);
+        if (k == 1) return min(nums1[s1], nums2[s2]); // if just choose the 1st small element, just choose from two starting point
+        int i = min(n1, k / 2), j = min(n2, k / 2); // the main purpose is to narrow the range of each vector, the compare length cannot exceed vector length
         
-        if (nums1[s1 + i - 1] > nums2[s2 + j - 1]) return getKthSmall(nums1, s1, nums2, s2 + j, k - j);
-        else return getKthSmall(nums1, s1 + i, nums2, s2, k - i);
+        if (nums1[s1 + i - 1] > nums2[s2 + j - 1]) return getKthSmall(nums1, s1, nums2, s2 + j, k - j); // narrow s2 range
+        else return getKthSmall(nums1, s1 + i, nums2, s2, k - i); // narrow s1 range
     }
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        int k1 = (nums1.size() + nums2.size() + 1) / 2;
+        int k1 = (nums1.size() + nums2.size() + 1) / 2; 
         int k2 = (nums1.size() + nums2.size() + 2) / 2;
         double a = getKthSmall(nums1, 0, nums2, 0, k1);
         double b = getKthSmall(nums1, 0, nums2, 0, k2);
