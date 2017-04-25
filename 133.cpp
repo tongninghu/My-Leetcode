@@ -39,7 +39,6 @@ public:
                 root->neighbors.push_back(p);
                 DFS(node->neighbors[i], p, visited);
             }
-            else if (node->neighbors[i] == node) root->neighbors.push_back(root);
             else root->neighbors.push_back(visited.find(node->neighbors[i]->label)->second);
         }
     }
