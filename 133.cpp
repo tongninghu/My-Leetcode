@@ -15,7 +15,7 @@ Third node is labeled as 2. Connect node 2 to node 2 (itself), thus forming a se
 Visually, the graph looks like the following:
 
 
-/**
+/*
  * Definition for undirected graph.
  * struct UndirectedGraphNode {
  *     int label;
