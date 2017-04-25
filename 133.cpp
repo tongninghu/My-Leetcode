@@ -29,6 +29,7 @@ Visually, the graph looks like the following:
  *     UndirectedGraphNode(int x) : label(x) {};
  * };
  */
+              
 class Solution {
 public:
     void DFS(UndirectedGraphNode *node, UndirectedGraphNode *root, unordered_map<int, UndirectedGraphNode *>& visited) {
