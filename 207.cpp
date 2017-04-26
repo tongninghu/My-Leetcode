@@ -25,7 +25,7 @@ public:
         vector<int> visited (numCourses, 0);
         bool flag = true;
         for(int i = 0; i < graph.size(); i++) {
-             helper(graph, visited, i, flag); 
+             if (visited[i] == 0) helper(graph, visited, i, flag); 
         }
         return flag;
     }
