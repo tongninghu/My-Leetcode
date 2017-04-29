@@ -16,38 +16,40 @@ Return 0 if there is no such transformation sequence.
 
 class Solution {
 public:
-    bool isOnebit(string s, string compare) {
-        int count = 0;
+    vector<string> findString(string s, unordered_set<string>& my_set) {
+        vector<string> res;
         for (int i = 0; i < s.length(); i++) {
-            if (s[i] != compare[i]) count++;
-        }
-        return (count == 1)? true : false;
-    }
-    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
-        queue<string> my_queue;
-        unordered_set<string> my_set;
-        unordered_map<string, int> my_map;
-        for (int i = 0; i < wordList.size(); i++) 
-            my_set.insert(wordList[i]);
-        my_queue.push(beginWord);
-        my_map[beginWord] = 1;
-        while (!my_queue.empty()) {
-            string t = my_queue.front();
-            my_queue.pop();
-            if (t != endWord) {
-                for (unordered_set<string>::iterator itr = my_set.begin(); itr != my_set.end(); ) {
-                    unordered_set<string>::iterator current = itr;
-                    unordered_set<string>::iterator next = ++itr;
-                    if (isOnebit(t, *current)) {
-                        my_queue.push(*current);
-                        my_map[*current] = my_map[t] + 1;
-                        my_set.erase(*current);
-                        itr = next;
+            for (int j = 0; j < 26; j++) {
+                string temp = s;
+                if (s[i] != 'a' + j) {
+                    temp[i] = (char)'a' + j;
+                    if(my_set.find(temp) != my_set.end()) {
+                        res.push_back(temp);
+                        my_set.erase(temp);
                     }
-                    else itr = next;
                 }
             }
-            else return my_map[t];
+        }
+        return res;
+    }
+    int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+        queue<pair<string, int>> my_queue;
+        unordered_set<string> my_set;
+        for (int i = 0; i < wordList.size(); i++) 
+            my_set.insert(wordList[i]);
+        my_queue.push({beginWord, 1});
+
+        while (!my_queue.empty()) {
+            string t = my_queue.front().first;
+            int num = my_queue.front().second;
+            my_queue.pop();
+            if (t != endWord) {
+                vector<string> temp = findString(t, my_set);
+                for(int j = 0; j < temp.size(); j++) {
+                    my_queue.push({temp[j], num + 1});
+                }
+            }
+            else return num;
         }
         return 0;
     }
