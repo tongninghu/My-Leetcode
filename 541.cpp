@@ -8,19 +8,10 @@ Length of the given string and k will in the range [1, 10000]
 
 class Solution {
 public:
-     void reverseString(int start, int end, string& s) {
-        char tmp;
-        for (int i = 0; i < (end - start + 1) / 2; i++) {
-            tmp = s[start + i];
-            s[start + i] = s[end - i];
-            s[end - i] = tmp;
-        }
-    }
-    
     string reverseStr(string s, int k) {
         int i = 0;
         while (i < s.length()){ 
-            reverseString(i, min(i + k - 1, (int)s.length() - 1), s);
+            reverse(s.begin() + i, s.begin() + min(i + k, (int)s.length()));
             i += 2 * k;
         }
         return s;
