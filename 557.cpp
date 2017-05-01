@@ -7,26 +7,15 @@ Note: In the string, each word is separated by single space and there will not b
 
 class Solution {
 public:
-    void reverseString(int start, int end, string& s) {
-        char tmp;
-        for (int i = 0; i < (end - start + 1) / 2; i++) {
-            tmp = s[start + i];
-            s[start + i] = s[end - i];
-            s[end - i] = tmp;
-        }
-    }
-    
     string reverseWords(string s) {
         int i = 0, j = 0;
         while(j < s.length()) {
-            if (s[j] == ' ') {
-                reverseString(i, j - 1, s);
-                j++;
-                i = j;
-            }
-            else j++;
+            while(j < s.length() && s[j] == ' ') s.erase(s.begin() + j);
+            i = j;
+            while(j < s.length() && s[j] != ' ') j++;
+            reverse(s.begin() + i, s.begin() + j);
+            j++;
         }
-        if (i < j) reverseString(i, j - 1, s);
         return s;
     }
 };
