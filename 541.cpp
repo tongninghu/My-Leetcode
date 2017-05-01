@@ -18,12 +18,10 @@ public:
     }
     
     string reverseStr(string s, int k) {
-        if (s.length() <= k) reverseString(0, s.length() - 1, s);
-        else {
-            int i;
-            for (i = k - 1; i < s.length(); i += 2 * k) 
-                reverseString(i - k + 1, i, s);
-            if (i - k + 1 < s.length()) reverseString(i - k + 1, s.length() - 1, s);
+        int i = 0;
+        while (i < s.length()){ 
+            reverseString(i, min(i + k - 1, (int)s.length() - 1), s);
+            i += 2 * k;
         }
         return s;
     }
