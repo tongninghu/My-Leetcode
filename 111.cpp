@@ -13,16 +13,16 @@ The minimum depth is the number of nodes along the shortest path from the root n
  */
 class Solution {
 public:
-    int minD (TreeNode* root, int depth) {
-
-        if (!root->left && !root->right) return depth ;
-        else if (root->left && root->right) return min(minD(root->left, depth + 1), minD(root->right, depth + 1));
-        else if (root->left && !root->right) return minD(root->left, depth + 1);
-        else  return minD(root->right, depth + 1);
+    int minD (TreeNode* root) {
+        if (!root) return 0;
+        int left = minD(root->left);
+        int right = minD(root->right);
+        if (left == 0) return right + 1;
+        else if (right == 0) return left + 1;
+        else return min(left, right) + 1;
     }
     
     int minDepth(TreeNode* root) {
-        if (!root) return 0;
-        return minD(root, 1);
+        return minD(root);
     }
 };
