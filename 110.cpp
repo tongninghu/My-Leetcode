@@ -13,17 +13,15 @@ For this problem, a height-balanced binary tree is defined as a binary tree in w
  */
 class Solution {
 public:
-    int hight(TreeNode* root, int depth) {
-        int l = depth, r = depth;
-        if (!root->left && !root->right) return depth;
-        if (root->left)  l = hight(root->left, depth + 1);
-        if (root->right) r = hight(root->right, depth + 1);
-        if (abs(l - r) > 1 || l == -1 || r == -1) return -1;
-        else return max(l, r);
+    int hight(TreeNode* root) {
+        if (!root) return 0;
+        int left = hight(root->left);
+        int right = hight(root->right);
+        if (abs(left - right) > 1 || left == -1 || right == -1) return -1;
+        return max(left, right) + 1;
     }
     bool isBalanced(TreeNode* root) {
-        if (!root) return true;
-        if(hight(root, 1) == -1) return false;
+        if(hight(root) == -1) return false;
         else return true;
     }
 };
