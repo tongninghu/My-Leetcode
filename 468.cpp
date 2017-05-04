@@ -33,36 +33,37 @@ Explanation: This is neither a IPv4 address nor a IPv6 address.
 
 class Solution {
 public:
-    bool validIPv4(string &IP){
-        int count = 0;
-        for (int i = 0; i < IP.length(); i++) {
-            int j = i, n = 0; 
-            while (i < IP.length() && IP[i] != '.') {
-                if (!isdigit(IP[i])) return false;
-                n = 10 * n + IP[i++] - '0';
-            }
-            if(n < 0 || n > 255 || IP[j] == '.' || IP[j] == '0' && (j + 1 < IP.length() && IP[j + 1] != '.')) return false;
-            ++count;
+    bool isvalidIPv4(string &s){
+        int n = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (!isdigit(s[i])) return false;
+            n = n * 10 + s[i] - '0';
         }
-        if (count == 4 && IP[IP.length() - 1] != '.') return true;
-        else return false;
+        if(s[0] == '0' && s.size() > 1 || s.length() > 3 || s.length() == 0 || n > 255) return false;
+        return true;
+    }
+    
+    bool isvalidIPv6(string &s){
+        if(s.length() > 4 || s.length() == 0) return false;
+        for (int i = 0; i < s.length(); i++) 
+            if (!isdigit(s[i]) && !(s[i] >= 'a' && s[i] <= 'f') && !(s[i] >= 'A' && s[i] <= 'F')) return false;
+        return true;
+    }
+
+    bool validIPv4(string &IP){
+        stringstream ss (IP);
+        string token;
+        for (int i = 0; i < 4; i++) 
+            if (!getline(ss, token, '.') || !isvalidIPv4(token))  return false;
+        return ss.eof();
     }
     
     bool validIPv6(string &IP){
-        int count = 0;
-        for (int i = 0; i < IP.length(); i++) {
-            int n = 1, j = i;
-            while (i < IP.length() && IP[i] != ':') {
-                if (!isdigit(IP[i]) && !isalpha(IP[i])) return false;
-                else if (isalpha(IP[i]) && !(IP[i] >= 'a' && IP[i] <= 'f') && !(IP[i] >= 'A' && IP[i] <= 'F')) return false;
-                else if (n++ > 4) return false;
-                i++;
-            }
-            if(IP[j] == ':') return false;
-            ++count;
-        }
-        if (count == 8 && IP[IP.length() - 1] != ':') return true;
-        else return false;
+        stringstream ss (IP);
+        string token;
+        for (int i = 0; i < 8; i++) 
+            if (!getline(ss, token, ':') || !isvalidIPv6(token))  return false;
+        return ss.eof();
     }
     
     string validIPAddress(string IP) {
