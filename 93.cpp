@@ -7,38 +7,34 @@ return ["255.255.11.135", "255.255.111.35"]. (Order does not matter)
 
 class Solution {
 public:
-    int stringToint(int start, int end, string &s) {
-        int n = 0;
-        if (end > start && s[start] == '0') return 256;
-        for (int i = start; i <= end; i++) n = (n * 10 + s[i] - '0');
-        return n;
+    bool validString(string s) {
+        int n = stoi(s);
+        if (s[0] == '0' && s.length() > 1 || n > 255) return false;
+        return true;
     }
-    
-    vector<string> findIp(int start, int end, string &s) {
-        vector<string> res;
-        if ((end - start + 1) > 6 || (end - start + 1) < 2) return vector<string> ();
-        for (int i = start; i <= start + 2 && i < end; i++) {
-            int l = stringToint(start, i, s);
-            int r = stringToint(i + 1, end, s);
-            if (l <= 255 && r <= 255) {
-                res.push_back(s.substr(start, i - start + 1) + "." + s.substr(i + 1, end - i));
+
+    void helper(vector<string>& res, vector<string>& temp, int start, string s) {
+        if (temp.size() == 4 && start == s.size()) {
+            string t = temp[0];
+            for (int i = 1; i < 4; i++) {
+                t += '.';
+                t += temp[i];
+            }
+            res.push_back(t);
+            return;
+        }
+        for (int i = start; i < (start + 3) && i < s.length(); i++) {
+            if (validString(s.substr(start, i - start + 1)) && (4 - temp.size() - 1) * 3 >= (s.length() - 1 - i)) {
+                temp.push_back(s.substr(start, i - start + 1));
+                helper(res, temp, i + 1, s);
+                temp.pop_back();
             }
         }
-        return res;
     }
     
     vector<string> restoreIpAddresses(string s) {
-        vector<string> res;
-        if (s.length() < 4) return vector<string> ();
-        for (int i = 2; i <= s.length() - 2; i++) {
-            vector<string> left = findIp(0, i - 1, s);
-            vector<string> right = findIp(i, s.length() - 1, s);
-                for (int j = 0; j < left.size(); j++) {
-                    for (int k = 0; k < right.size(); k++) {
-                        res.push_back(left[j] + "." + right[k]);
-                    }
-                }
-        }
+        vector<string> res, temp;
+        helper(res, temp, 0, s);
         return res;
     }
 };
