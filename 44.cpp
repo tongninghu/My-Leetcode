@@ -20,33 +20,23 @@ isMatch("aab", "c*a*b") → false
 class Solution {
 public:
     bool isMatch(string s, string p) {
-        if (s.size() == 0 && (p.size() == 0 || p.size() == 1 && p[0] == '*')) return true;
-        else if (s.size() == 0 || p.size() == 0) return false;
+        int m = s.length(), n = p.length();
+        vector<vector<bool>> dp(m + 1, vector<bool> (n + 1, false));
+        dp[0][0] = true;
         
-        vector<vector<bool>> m (p.size(), vector<bool>(s.size(), false));
-        int count = 0;
-        
-        if (p[0] == '*') {
-            for (int j = 0; j < s.size(); j++)
-                m[0][j] = true;
-        }
-        else if (p[0] == '?' || p[0] == s[0]) {
-            m[0][0] = true;
-            count = 1;
-        }
-        
-        for (int i = 1; i < p.size(); i++) 
-            if (m[i - 1][0] == true && (p[i] == '*' || p[i] == '?' && count == 0 || p[i] == s[0] && count == 0)) {
-                m[i][0] = true;
-                if (p[i] == '?' || p[i] == s[0] ) count = 1;
+        for (int j = 0; j <= n; j++) {
+            if (p[j] == '*')
+                dp[0][j + 1] = true;
+            else
+                break;
             }
-            
-        for (int i = 1; i < p.size(); i++) {
-            for (int j = 1; j < s.size(); j++) {
-                if (p[i] == s[j] || p[i] == '?') m[i][j] = m[i - 1][j - 1];
-                else if (p[i] == '*' && (m[i - 1][j - 1] == true || m[i - 1][j] == true || m[i][j - 1] == true)) m[i][j] = true;
+        
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if (p[j] == '*') dp[i + 1][j + 1] = dp[i][j + 1] || dp[i + 1][j];
+                else if (p[j] == '?' || p[j] == s[i]) dp[i + 1][j + 1] = dp[i][j];
             }
         }
-        return m[p.size() - 1][s.size() - 1];
+        return dp[m][n];
     }
 };
