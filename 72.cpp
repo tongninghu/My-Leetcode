@@ -18,7 +18,9 @@ public:
         for (int i  = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (word1[j] == word2[i]) dp[i + 1][j + 1] = dp[i][j];
+                // this is because the two last elements in word1 and word2 can be replaced.
                 else if (dp[i + 1][j] == dp[i][j + 1] && dp[i][j] < dp[i + 1][j]) dp[i + 1][j + 1] = dp[i][j + 1];
+                // if cannot be replaced, we should add one more element in word1 or word2.
                 else dp[i + 1][j + 1] = min(dp[i + 1][j] + 1, dp[i][j + 1] + 1);
             }
         }
