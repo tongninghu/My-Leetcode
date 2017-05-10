@@ -5,20 +5,11 @@ Given a list of non-negative integers representing the amount of money of each h
 class Solution {
 public:
     int rob(vector<int>& nums) {
-        int m[nums.size() + 2][nums.size() + 2] = {0};
+        int even = 0, odd = 0;
         for (int i = 0; i < nums.size(); i++) {
-            m[i + 1][i + 1] = nums[i];
+            if (i % 2 == 0) even = max(even + nums[i], odd);
+            else odd = max(odd + nums[i], even);
         }
-        for (int l = 2; l <= nums.size(); l++) {
-            for (int i = 1; i <= nums.size() - l + 1; i++) {
-                int j = i + l - 1;
-                int sum = 0;
-                for (int k = i; k <= j; k++) {
-                    sum = max(sum, m[i][k - 1] + m[k + 1][j]);
-                }
-                m[i][j] = sum;
-            }
-        }
-        return m[1][nums.size()];
+        return max(even, odd);
     }
 };
