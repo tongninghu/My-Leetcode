@@ -7,21 +7,19 @@ Given a list of non-negative integers representing the amount of money of each h
 class Solution {
 public:
     int rob(vector<int>& nums) {
-        int m[nums.size() + 2][nums.size() + 2] = {0};
+        if(nums.size() == 1) return nums[0];
+        vector<int> WO (nums.size() + 2, 0);
+        vector<int> WI (nums.size() + 2, 0);
+        vector<int> WOR (nums.size() + 2, 0);
+        vector<int> WIR (nums.size() + 2, 0);
         for (int i = 0; i < nums.size(); i++) {
-            m[i + 1][i + 1] = nums[i];
+            WO[i + 1] = max(WO[i], WI[i]);
+            WI[i + 1] = WO[i] + nums[i];
         }
-        
-        for (int l = 2; l <= nums.size(); l++) {
-            for (int i = 1; i <= nums.size() - l + 1; i++) {
-                int j = i + l - 1, sum = 0;
-                for( int k = i; k <= j; k++) {
-                    if (l != nums.size()) sum = max(sum, m[i][k - 1] + m[k + 1][j]);
-                    else sum = max(m[2][nums.size()], m[1][nums.size() - 1]);
-                }
-                m[i][j] = sum;
-            }
+        for (int i = nums.size() - 1; i >= 0; i--) {
+            WOR[nums.size() - i] = max(WOR[nums.size() - i - 1], WIR[nums.size() - i - 1]);
+            WIR[nums.size() - i] = WOR[nums.size() - i - 1] + nums[i];
         }
-        return m[1][nums.size()];
+        return max(WO[nums.size()], WOR[nums.size()]);
     }
 };
