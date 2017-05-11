@@ -19,7 +19,7 @@ class Solution {
 public:
     int maxCoins(vector<int>& nums) {
         int size = nums.size();
-        vector<vector<int>> dp (nums.size() + 5, vector<int> (nums.size() + 5, 0));
+        vector<vector<int>> dp (nums.size() + 2, vector<int> (nums.size() + 2, 0));
         nums.insert(nums.begin(), 1);
         nums[size + 1] = 1;
 
