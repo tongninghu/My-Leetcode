@@ -5,11 +5,13 @@ Given a list of non-negative integers representing the amount of money of each h
 class Solution {
 public:
     int rob(vector<int>& nums) {
-        int even = 0, odd = 0;
+        vector<int> WO (nums.size() + 2, 0);
+        vector<int> WI (nums.size() + 2, 0);
+
         for (int i = 0; i < nums.size(); i++) {
-            if (i % 2 == 0) even = max(even + nums[i], odd);
-            else odd = max(odd + nums[i], even);
+            WO[i + 1] = max(WO[i], WI[i]);
+            WI[i + 1] = WO[i] + nums[i];
         }
-        return max(even, odd);
+        return max(WO[nums.size()], WI[nums.size()]);
     }
 };
