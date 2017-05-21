@@ -9,26 +9,17 @@ Return true because "leetcode" can be segmented as "leet code".
 class Solution {
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
-        int m = s.size();
         unordered_set<string> wordlist;
         for (int i = 0; i < wordDict.size(); i++) 
             wordlist.insert(wordDict[i]);
-        
-        vector<vector<bool>> dp (m, vector<bool>(m, false));
-        for(int l = 1; l <= m; l++) {
-            for(int i = 0; i <= m - l; i++) {
-                int j = i + l - 1;
-                if(wordlist.find(s.substr(i, l)) != wordlist.end()) dp[i][j] = true;
-                else {
-                    for (int k = i; k < j; k++) {
-                        if (dp[i][k] == true && dp[k + 1][j] == true) {
-                            dp[i][j] = true;
-                            break;
-                        }
-                    }
-                }
+        int m = s.size();
+        vector<bool> dp(m + 1, false);
+        dp[0] = true;
+        for(int i = 1; i <= m; i++) {
+            for(int j = i - 1; j >= 0 ; j--) {
+                if (dp[j] == true && wordlist.find(s.substr(j,i-j)) != wordlist.end()) dp[i] = true;
             }
         }
-        return dp[0][m - 1];
+        return dp[m];
     }
 };
