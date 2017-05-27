@@ -13,31 +13,20 @@ For example,
 
 class Solution {
 public:
-    vector<int> nextPermutation(vector<int>& nums) {
-        int flag = 0;
-        vector<int> res = nums;
-        for (int i = res.size() - 2; i >= 0 && flag == 0; i--) {
-            if(res[i + 1] > res[i]) {
-                for (int j = res.size() - 1; j >= i + 1; j--) {
-                    if(res[i] < res[j]) {
-                        swap(res[i], res[j]);
-                        reverse(res.begin() + i + 1, res.end());
-                        flag = 1;
-                        break;
-                    }
-                }
+    void permuteRecursive(vector<int> &nums, int begin, vector<vector<int>>& result) {
+        if (begin > nums.size() - 1) result.push_back(nums);
+        else {
+            for(int i = begin; i < nums.size(); i++) {
+                swap(nums[begin], nums[i]);
+                permuteRecursive(nums, begin + 1, result);
+                swap(nums[begin], nums[i]);
             }
         }
-        if(flag == 0) reverse(res.begin(), res.end());
-        return res;
     }
+    
     vector<vector<int>> permute(vector<int>& nums) {
-        vector<vector<int>> res;
-        vector<int> temp = nums;
-        res.push_back(temp);
-        while(nums != (temp = nextPermutation(temp))) {
-            res.push_back(temp);
-        }
-        return res;
+        vector<vector<int>> result;
+        permuteRecursive(nums, 0, result);
+        return result;
     }
 };
