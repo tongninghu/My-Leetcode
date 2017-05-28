@@ -13,20 +13,27 @@ For example,
 
 class Solution {
 public:
-    void permuteRecursive(vector<int> &nums, int begin, vector<vector<int>>& result) {
-        if (begin > nums.size() - 1) result.push_back(nums);
-        else {
-            for(int i = begin; i < nums.size(); i++) {
-                swap(nums[begin], nums[i]);
-                permuteRecursive(nums, begin + 1, result);
-                swap(nums[begin], nums[i]);
+    void dfs(vector<int>& nums, vector<int>& cur, vector<vector<int>>& res, unordered_set<int>& record) {
+        if(cur.size() == nums.size()) {
+            res.push_back(cur);
+            return;
+        }
+        
+        for(int i = 0; i < nums.size(); i++) {
+                if(record.find(nums[i]) == record.end()) {
+                cur.push_back(nums[i]);
+                record.insert(nums[i]);
+                dfs(nums, cur, res, record);
+                cur.pop_back();
+                record.erase(nums[i]);
             }
         }
     }
-    
     vector<vector<int>> permute(vector<int>& nums) {
-        vector<vector<int>> result;
-        permuteRecursive(nums, 0, result);
-        return result;
+        vector<int> cur;
+        vector<vector<int>> res;
+        unordered_set<int> record;
+        dfs(nums, cur, res, record);
+        return res;
     }
 };
