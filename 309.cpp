@@ -38,8 +38,8 @@ public:
         for (int i = 1; i < n; i++) {
             buy[i] = max(buy[i - 1], reset[i - 1] - prices[i]);
             sell[i] = max(sell[i - 1], buy[i - 1] + prices[i]);
-            reset[i] = max(max(buy[i - 1], sell[i - 1]), reset[i - 1]);
+            reset[i] = max(sell[i - 1]), reset[i - 1]);
         }
-        return max(buy[n - 1], max(sell[n - 1], reset[n - 1]));
+        return max(sell[n - 1], reset[n - 1]);
     }
 };
