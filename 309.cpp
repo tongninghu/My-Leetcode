@@ -25,3 +25,21 @@ public:
         return max(buy[n], max(sell[n], reset[n]));
     }
 };
+
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        if (prices.size() == 0) return 0;
+        int n = prices.size(), maxprof = INT_MIN;
+        vector<int> buy (n , 0);
+        vector<int> sell (n, 0);
+        vector<int> reset (n, 0);
+        buy[0] = - prices[0];
+        for (int i = 1; i < n; i++) {
+            buy[i] = max(buy[i - 1], reset[i - 1] - prices[i]);
+            sell[i] = max(sell[i - 1], buy[i - 1] + prices[i]);
+            reset[i] = max(max(buy[i - 1], sell[i - 1]), reset[i - 1]);
+        }
+        return max(buy[n - 1], max(sell[n - 1], reset[n - 1]));
+    }
+};
