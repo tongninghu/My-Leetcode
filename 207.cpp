@@ -9,24 +9,26 @@ There are a total of 2 courses to take. To take course 1 you should have finishe
 
 class Solution {
 public:
-    void helper(vector<vector<int>>& graph, vector<int>& visited, int i, bool& flag) {
-        visited[i] = 1;
-        for (int j = 0; j <graph[i].size(); j++) {
-            if (visited[j] == 0 && graph[i][j] == 1) helper(graph, visited, j, flag);
-            else if (visited[j] == 1 && graph[i][j] == 1) flag = false;
-        }
-        visited[i] = 2;
-    }
     bool canFinish(int numCourses, vector<pair<int, int>>& prerequisites) {
-        vector<vector<int>>graph (numCourses, vector<int>(numCourses, 0));
-        for(int i = 0; i < prerequisites.size(); i++) {
-            graph[prerequisites[i].first][prerequisites[i].second] = 1;
+        vector<vector<int>> graph (numCourses, vector<int> ());
+        vector<int> degree (numCourses, 0);
+        queue<int> q;
+        int n = 0;
+        for (int i = 0; i < prerequisites.size(); i++) {
+            graph[prerequisites[i].second].push_back(prerequisites[i].first);
+            degree[prerequisites[i].first]++;
         }
-        vector<int> visited (numCourses, 0);
-        bool flag = true;
-        for(int i = 0; i < graph.size(); i++) {
-             if (visited[i] == 0) helper(graph, visited, i, flag); 
+        for (int j = 0; j < numCourses; j++)
+            if (degree[j] == 0) q.push(j);
+        
+        while(!q.empty()) {
+            int t = q.front();
+            q.pop();
+            n++;
+            for(int a : graph[t])
+                if (--degree[a] == 0) q.push(a);
         }
-        return flag;
+        if (n == numCourses) return true;
+        else return false;
     }
 };
