@@ -16,34 +16,32 @@ There are a total of 4 courses to take. To take course 3 you should have finishe
 
 class Solution {
 public:
-    vector<unordered_set<int>> buildGraph(int numCourses, vector<pair<int, int>>& prerequisites) {
+    vector<unordered_set<int>> buildGraph(int numCourses, vector<pair<int, int>>& prerequisites, vector<int>& degree) {
         vector<unordered_set<int>> graph (numCourses);
-        for(int i = 0; i < prerequisites.size(); i++) 
+        for(int i = 0; i < prerequisites.size(); i++) {
             graph[prerequisites[i].second].insert(prerequisites[i].first);
-        return graph;
-    }
-    
-    vector<int> buildDegree(int numCourse, vector<pair<int, int>>& prerequisites) {
-        vector<int> degree (numCourse, 0);
-        for(int i = 0; i < prerequisites.size(); i++) 
             degree[prerequisites[i].first]++;
-        return degree;
-    }
+        }
+        return graph;
+    }   
     
     vector<int> findOrder(int numCourses, vector<pair<int, int>>& prerequisites) {
-        vector<unordered_set<int>> graph = buildGraph(numCourses, prerequisites);
-        vector<int> degree = buildDegree(numCourses, prerequisites);
+        vector<int> degree (numCourses, 0);
+        vector<unordered_set<int>> graph = buildGraph(numCourses, prerequisites,degree);
         vector<int> res;
-        for (int i = 0; i < numCourses; i++) {
-            int j = 0;
-            for (; j < numCourses; j++) 
-                if (degree[j] == 0) break;
-            if (j == numCourses) return vector<int> ();
-            degree[j] = -1;
-            res.push_back(j);
-            for (int a : graph[j]) 
-                degree[a]--;
+        queue<int> my_queue;
+        
+        for(int i = 0; i < numCourses; i++) 
+            if (degree[i] == 0) my_queue.push(i);
+        
+        while(!my_queue.empty()) {
+            int t = my_queue.front();
+            my_queue.pop();
+            res.push_back(t);   
+            for (int a : graph[t]) 
+                if (--degree[a] == 0) my_queue.push(a);
         }
-        return res;
+        if (res.size() == numCourses) return res;
+        else return vector<int> ();
     }
 };
