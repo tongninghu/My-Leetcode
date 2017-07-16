@@ -10,31 +10,28 @@ Merge k sorted linked lists and return it as one sorted list. Analyze and descri
  */
 class Solution {
 public:
-    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        ListNode *fakeHead = new ListNode(-1);
-        ListNode *ptr = fakeHead;
-        while(l1 && l2) {
-            if (l1->val > l2->val) {
-                ptr->next = l2;
-                l2 = l2->next;
-                ptr = ptr->next;
-            }
-            else {
-                ptr->next = l1;
-                l1 = l1->next;
-                ptr = ptr->next;
-            }
-        } 
-        if(l1) ptr->next = l1;
-        else ptr->next = l2;
-        return fakeHead->next;    
-    }
+    struct compare {
+        bool operator() (const ListNode* l1, const ListNode* l2) {
+            return (l1->val > l2->val);
+        }
+    };
     
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-        ListNode* temp = NULL;
-        for (int i = 0; i < lists.size(); i++) {
-            temp = mergeTwoLists(temp, lists[i]);
+        if (lists.size() == 0) return NULL;
+        priority_queue<ListNode*, vector<ListNode*>, compare> q;
+        for (int i = 0; i < lists.size(); i++)
+            if (lists[i]) q.push(lists[i]);
+        
+        ListNode* fakeHead = new ListNode(-1);
+        ListNode* ptr = fakeHead;
+        
+        while(!q.empty()) {
+            ptr->next = q.top();
+            ListNode* temp = q.top()->next;
+            q.pop();
+            if (temp) q.push(temp);
+            ptr = ptr->next;
         }
-        return temp;
+        return fakeHead->next;
     }
 };
