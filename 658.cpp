@@ -10,22 +10,12 @@ Output: [1,2,3,4]
 class Solution {
 public:
     vector<int> findClosestElements(vector<int>& arr, int k, int x) {
-        int low = 0, high = arr.size() - 1, mid;
-        while(low < high) {
-            mid = (high - low) / 2 + low;
-            if (arr[mid] >= x) {
-                high = mid;
-            }
-            else {
-                low = mid + 1;
-            }
-        }
         vector<int> res;
-        int i = low, j;
-        if (arr[low] != x) {
-            i = low - 1;
+        int i = upper_bound(arr.begin(), arr.end(), x) - arr.begin();
+        if (arr[i] != x) {
+            i--;
         }
-        j = i + 1;
+        int j = i + 1;
         
         while (res.size() < k) {
             if (i >= 0 && j < arr.size() && abs(arr[i] - x) <= abs(arr[j] - x) || j == arr.size()) {
